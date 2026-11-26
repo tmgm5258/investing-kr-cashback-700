@@ -137,6 +137,12 @@
   .sticky-text { margin: 0; font-size: 15px; font-weight: 700; color: #fff; white-space: nowrap; }
   .sticky-text strong { color: var(--gold); font-size: 20px; font-weight: 800; }
   .sticky-cta .btn { width: auto; flex: 0 0 auto; height: 48px; padding: 0 22px; font-size: 16px; }
+  @media (max-width: 359px) {
+    .sticky-cta { gap: 8px; padding-left: 12px; padding-right: 12px; }
+    .sticky-text { font-size: 14px; }
+    .sticky-text strong { font-size: 18px; }
+    .sticky-cta .btn { padding: 0 14px; font-size: 15px; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -298,9 +304,10 @@
 
 </div>
 
-<div class="sticky-cta" id="sticky-cta">
+<!-- Shown from the start: prompts clients to download the TMGM app through the OneLink. The sign-up form stays as the other route. -->
+<div class="sticky-cta is-visible" id="sticky-cta">
   <p class="sticky-text" data-i18n-html="sticky">최대 <strong>$700</strong> 캐시백</p>
-  <button type="button" class="btn" data-go-form data-i18n="signup">가입하기</button>
+  <a class="btn" href="https://tmgm.onelink.me/4CHy/347nbolg" data-i18n="appDownload">앱 다운로드</a>
 </div>
 
 <script>
@@ -345,18 +352,18 @@
       why4: 'The best trading conditions',
       footTc: '*T&Cs apply.',
       disclaimer: 'Trading foreign exchange and CFDs on margin carries a high level of risk and may not be suitable for all investors. You do not own, or have, any interest in the underlying asset. Please read the Client Agreement and other disclosures on our website carefully before deciding to trade the financial products offered in this material. The above information is provided by Trademax Global Limited (VFSC 40356).',
-      sticky: 'Up to <strong>$700</strong> cashback'
+      sticky: 'Up to <strong>$700</strong> cashback',
+      appDownload: 'Get the app'
     };
     var MSG = {
-      ko: { errEmail: '올바른 이메일 주소를 입력해 주세요.', errAgree: '가입하려면 프로모션 약관 및 개인정보처리방침에 동의해 주세요.', info: '검토용 초안입니다. 실제 페이지에서는 기존 고객은 클라이언트 포털로, 신규 고객은 계좌 개설 단계로 이동합니다. 입력하신 정보는 전송되거나 저장되지 않습니다.' },
-      en: { errEmail: 'Please enter a valid email address.', errAgree: 'To sign up, please agree to the Promotion Terms and Privacy Policy.', info: 'This is a review draft. On the live page, existing clients go to the client portal and new clients go to account opening. Nothing you enter is sent or saved.' }
+      ko: { errEmail: '올바른 이메일 주소를 입력해 주세요.', errAgree: '가입하려면 프로모션 약관 및 개인정보처리방침에 동의해 주세요.', info: '검토용 초안입니다. 실제 페이지에서는 가입 후 앱 스토어로 이동해 TMGM 앱을 다운로드합니다. 입력하신 정보는 전송되거나 저장되지 않습니다.' },
+      en: { errEmail: 'Please enter a valid email address.', errAgree: 'To sign up, please agree to the Promotion Terms and Privacy Policy.', info: 'This is a review draft. On the live page, clients go to the app store to download the TMGM app after signing up. Nothing you enter is sent or saved.' }
     };
 
     var form = document.getElementById('signup');
     var email = document.getElementById('kr-email');
     var agreeTerms = document.getElementById('agree-terms');
     var status = document.getElementById('form-status');
-    var sticky = document.getElementById('sticky-cta');
     var langBtn = document.getElementById('lang-toggle');
     var langText = document.getElementById('lang-toggle-text');
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -436,15 +443,6 @@
       setTimeout(function () { email.focus({ preventScroll: true }); }, reduceMotion ? 0 : 450);
     }
     each('data-go-form', function (el) { el.addEventListener('click', goToForm); });
-
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          var scrolledPast = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-          sticky.classList.toggle('is-visible', scrolledPast);
-        });
-      }, { threshold: 0 }).observe(form);
-    }
 
     try {
       if (new URLSearchParams(location.search).get('lang') === 'en') { setLang('en'); }
